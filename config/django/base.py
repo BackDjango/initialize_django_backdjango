@@ -13,7 +13,7 @@ from pathlib import Path
 from core.constants import SERVICE
 
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent.parent
+BASE_DIR = Path(__file__).resolve().parent.parent.parent
 
 SECRET_KEY = SERVICE.SECRET_KEY
 

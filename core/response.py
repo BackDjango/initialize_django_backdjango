@@ -17,17 +17,17 @@ class CustomResponse(Response):
     응답 메시지는 이것으로 관리합니다.
     """
 
-    def __init__(self, **kwargs):
+    def __init__(self, data=None, **kwargs):
         status = kwargs.get("status", 200)
         code = kwargs.get("code", SYSTEM_CODE.SUCCESS)
         msg = kwargs.get("msg", code[1])
-        data = {
+        payload = {
             "data": data,
             "status_code": status,
             "msg": msg,
             "code": code[0],
         }
-        super().__init__(data, **kwargs)
+        super().__init__(payload, **kwargs)
 
 
 def create_response(**kwargs):
