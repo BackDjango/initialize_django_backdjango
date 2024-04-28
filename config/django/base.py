@@ -145,6 +145,7 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.JSONParser",  # JSON 파서
     ],
     "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    # "DEFAULT_RENDERER_CLASSES": ("core.renderers.CustomRenderer",),
     "DEFAULT_RESPONSE_CLASS": "core.response.CustomResponse",
     "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPagination",
 }

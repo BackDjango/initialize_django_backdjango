@@ -23,14 +23,15 @@ from drf_spectacular.views import (
     SpectacularSwaggerView,
 )
 
-urlpatterns += [
-    path("schema/", SpectacularAPIView.as_view(), name="schema"),
-    path(
-        "docs/",
-        SpectacularSwaggerView.as_view(url_name="schema"),
-        name="swagger-ui",
-    ),
-]
+if settings.DEBUG:
+    urlpatterns += [
+        path("schema/", SpectacularAPIView.as_view(), name="schema"),
+        path(
+            "docs/",
+            SpectacularSwaggerView.as_view(url_name="schema"),
+            name="swagger-ui",
+        ),
+    ]
 
 # Static/Media File Root (CSS, JavaScript, Images)
 urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

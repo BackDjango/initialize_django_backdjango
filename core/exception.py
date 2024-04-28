@@ -42,15 +42,15 @@ class CustomAPIException(APIException):
     """
 
     def __init__(self, **kwargs):
-        status_code = kwargs.get("status", 400)
-        code = kwargs.get("code", SYSTEM_CODE.BAD_REQUEST)
-        detail = kwargs.get("detail", code[1])
+        self.status_code = kwargs.get("status", 400)
+        self.code = kwargs.get("code", SYSTEM_CODE.BAD_REQUEST)
+        self.detail = self.code[1]
 
         data = {
-            "data": None,
-            "status_code": status_code,
-            "msg": detail,
-            "code": code[0],
+            "data": {},
+            "status_code": self.status_code,
+            "msg": self.detail,
+            "code": self.code[0],
         }
         super().__init__(data, **kwargs)
 
