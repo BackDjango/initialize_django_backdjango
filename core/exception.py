@@ -5,6 +5,7 @@
 """
 
 # System
+import logging
 from rest_framework import status
 from rest_framework.views import exception_handler
 from rest_framework.exceptions import APIException
@@ -13,19 +14,24 @@ from rest_framework.exceptions import APIException
 from core.constants import SYSTEM_CODE
 from core.response import create_response
 
+logger = logging.getLogger("django")
 
-def custom_exception_handler(exc, context):
+
+def default_exception_handler(exc, context):
     """
-    Exception Handler
+    Default Exception Handler
     예상 못하지 에러는 기본적으로 핸들러로 관리합니다.
     """
+    logger.error(f"exc: {exc}")
+    logger.error(f"context: {context}")
     # Call REST framework's default exception handler first,
     # to get the standard error response.
-    response = exception_handler(exc, context)
+    response = custom_exception_handler(exc, context)
 
     # Now add the HTTP status code to the response.
     if isinstance(exc, CustomAPIException):
         return response
+
     if response is not None:
         response.data["status_code"] = response.status_code
 
@@ -33,6 +39,23 @@ def custom_exception_handler(exc, context):
         code=SYSTEM_CODE.UNKNOWN_SERVER_ERROR,
         status=status.HTTP_500_INTERNAL_SERVER_ERROR,
     )
+
+
+def custom_exception_handler(exc, context):
+    """
+    Custom Exception Handler
+    사용자가 지정한 에러는 이 핸들러로 관리합니다.
+    """
+    if not isinstance(exc, APIException):
+        return None
+
+    payload = {
+        "data": {},
+        "status": getattr(exc, "status_code", 400),
+        "msg": getattr(exc, "detail", SYSTEM_CODE.BAD_REQUEST[1]),
+        "code": getattr(exc, "code", SYSTEM_CODE.BAD_REQUEST[0]),
+    }
+    return create_response(**payload)
 
 
 class CustomAPIException(APIException):
@@ -45,14 +68,6 @@ class CustomAPIException(APIException):
         self.status_code = kwargs.get("status", 400)
         self.code = kwargs.get("code", SYSTEM_CODE.BAD_REQUEST)
         self.detail = self.code[1]
-
-        data = {
-            "data": {},
-            "status_code": self.status_code,
-            "msg": self.detail,
-            "code": self.code[0],
-        }
-        super().__init__(data, **kwargs)
 
 
 def raise_exception(**kwargs):

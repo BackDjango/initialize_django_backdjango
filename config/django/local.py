@@ -6,7 +6,7 @@
 
 # Project
 from config.django.base import *
-from config.settings.swagger import *
+from config.settings.swagger.settings import *
 
 DATABASES = {
     "default": {
