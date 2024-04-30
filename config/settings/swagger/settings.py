@@ -17,4 +17,5 @@ SPECTACULAR_SETTINGS = {
     },
     # available SwaggerUI versions: https://github.com/swagger-api/swagger-ui/releases
     "SWAGGER_UI_DIST": "https://cdn.jsdelivr.net/npm/swagger-ui-dist@latest",  # default
+    # "POSTPROCESSING_HOOKS": ["core.schema_hooks.custom_hook"], # Custom Hook
 }

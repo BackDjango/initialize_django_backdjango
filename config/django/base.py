@@ -5,7 +5,6 @@
 """
 
 # System
-from datetime import datetime
 import os
 from pathlib import Path
 
@@ -139,7 +138,7 @@ REST_FRAMEWORK = {
     # "DEFAULT_AUTHENTICATION_CLASSES": (  # 애플리케이션에서 사용할 인증 방법을 정의
     #     "config.rest_framework.CustomJWTAuthentication",  # JWT 인증 방식
     # ),
-    "EXCEPTION_HANDLER": "core.exception.custom_exception_handler",  # 예외 처리기 설정
+    "EXCEPTION_HANDLER": "core.exception.default_exception_handler",  # 예외 처리기 설정
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",  # drf의 schema 클래스를 drf-spectacular의 AuthSechema로 교체
     "DEFAULT_PARSER_CLASSES": [  # 요청 본문을 파싱하는 데  사용할 파서를 지정
         "rest_framework.parsers.JSONParser",  # JSON 파서
@@ -148,4 +147,41 @@ REST_FRAMEWORK = {
     # "DEFAULT_RENDERER_CLASSES": ("core.renderers.CustomRenderer",),
     "DEFAULT_RESPONSE_CLASS": "core.response.CustomResponse",
     "DEFAULT_PAGINATION_CLASS": "core.pagination.CustomPagination",
+}
+
+# ==================================================================== #
+#                       Logging config                                 #
+# ==================================================================== #
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "filters": {
+        "require_debug_true": {
+            "()": "django.utils.log.RequireDebugTrue",
+        },
+        "require_debug_false": {
+            "()": "django.utils.log.RequireDebugFalse",
+        },
+    },
+    "formatters": {
+        "django.server": {
+            "format": "[%(asctime)s] %(levelname)s [PID: %(process)d - %(processName)s] | [TID: %(thread)d - %(threadName)s] %(message)s",
+            "datefmt": "%Y-%m-%d %H:%M:%S",
+        },
+    },
+    "handlers": {
+        "console": {
+            "level": "DEBUG",
+            "class": "logging.StreamHandler",
+            "filters": ["require_debug_true"],
+            "formatter": "django.server",
+        },
+    },
+    "loggers": {
+        "django.db.backends": {
+            "handlers": ["console"],
+            "level": "DEBUG",
+            "propagate": False,
+        },
+    },
 }

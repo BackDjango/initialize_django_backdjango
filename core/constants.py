@@ -26,7 +26,7 @@ class SERVICE:
 
 class SYSTEM_CODE:
     """
-    각종 System Code
+    각종 System Code (나중에 다국어 처리를 위해서)
     """
 
     # 0~1000 Base
@@ -41,3 +41,5 @@ class SYSTEM_CODE:
     USER_NOT_FOUND = (1002, "USER_NOT_FOUND")
     USER_INVALID_PW = (1003, "USER_INVALID_PW")
     USER_NOT_ACTIVE = (1004, "USER_NOT_ACTIVE")
+    TOKEN_EXPIRED = (1005, "TOKEN_EXPIRED")
+    TOKEN_INVALID = (1006, "TOKEN_INVALID")
