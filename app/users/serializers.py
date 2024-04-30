@@ -5,6 +5,7 @@
 """
 
 # System
+from django.db import IntegrityError
 from rest_framework import serializers
 
 # Project
@@ -37,7 +38,10 @@ class SignUpSerializer(serializers.Serializer):
         email = validated_data["email"]
         password = validated_data["password"]
 
-        user = User.objects.create_user(email=email, password=password)
+        try:
+            user = User.objects.create_user(email=email, password=password)
+        except IntegrityError:
+            raise_exception(code=SYSTEM_CODE.USER_CREATE_ERROR)
 
         return CustomJWTAuthentication.create_token(user=user)
 

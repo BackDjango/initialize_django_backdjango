@@ -1,7 +1,17 @@
+settings = --settings=config.django.local
+
 .PHONY: start
 start:
 	@printf "[exec] Python Django Start!!!\n"; \
-	python manage.py runserver --settings=config.django.local
+	python manage.py runserver $(settings);
+
+.PHONY: makemigrations
+makemigrations:
+	python manage.py makemigrations $(settings);
+
+.PHONY: migrate
+migrate:
+	python manage.py migrate $(settings);
 
 .PHONY: up
 up:

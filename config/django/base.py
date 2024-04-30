@@ -28,6 +28,7 @@ ALLOWED_HOSTS = ["*"]
 LOCAL_APPS = [
     "app",
     "app.users",
+    "app.boards",
     "core",
 ]
 
@@ -135,9 +136,7 @@ MEDIA_URL = "/media/"
 #                       DRF config                                     #
 # ==================================================================== #
 REST_FRAMEWORK = {
-    # "DEFAULT_AUTHENTICATION_CLASSES": (  # 애플리케이션에서 사용할 인증 방법을 정의
-    #     "config.rest_framework.CustomJWTAuthentication",  # JWT 인증 방식
-    # ),
+    "DEFAULT_AUTHENTICATION_CLASSES": ("core.jwt.CustomJWTAuthentication",),  # 애플리케이션에서 사용할 인증 방법을 정의  # JWT 인증 방식
     "EXCEPTION_HANDLER": "core.exception.default_exception_handler",  # 예외 처리기 설정
     "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",  # drf의 schema 클래스를 drf-spectacular의 AuthSechema로 교체
     "DEFAULT_PARSER_CLASSES": [  # 요청 본문을 파싱하는 데  사용할 파서를 지정
