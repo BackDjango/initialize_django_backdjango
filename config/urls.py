@@ -16,6 +16,7 @@ from config.settings.swagger.setup import SwaggerSetup
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api", include(("app.users.urls", "api-users"))),
+    path("api", include(("app.boards.urls", "api-boards"))),
 ]
 
 # Swagger

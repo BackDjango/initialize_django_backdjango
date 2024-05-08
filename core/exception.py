@@ -7,7 +7,6 @@
 # System
 import logging
 from rest_framework import status
-from rest_framework.views import exception_handler
 from rest_framework.exceptions import APIException
 
 # Project
@@ -28,8 +27,7 @@ def default_exception_handler(exc, context):
     # to get the standard error response.
     response = custom_exception_handler(exc, context)
 
-    # Now add the HTTP status code to the response.
-    if isinstance(exc, CustomAPIException):
+    if response:
         return response
 
     if response is not None:
@@ -53,7 +51,7 @@ def custom_exception_handler(exc, context):
         "data": {},
         "status": getattr(exc, "status_code", 400),
         "msg": getattr(exc, "detail", SYSTEM_CODE.BAD_REQUEST[1]),
-        "code": getattr(exc, "code", SYSTEM_CODE.BAD_REQUEST[0]),
+        "code": getattr(exc, "code", SYSTEM_CODE.BAD_REQUEST),
     }
     return create_response(**payload)
 

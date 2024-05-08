@@ -7,6 +7,7 @@
 # System
 from drf_spectacular.utils import extend_schema, OpenApiResponse, inline_serializer
 from rest_framework import serializers
+from functools import wraps
 
 # Project
 
@@ -16,14 +17,22 @@ def common_response_schema(status_code=200, description="성공", serializer=Non
     공통 응답 스키마를 추가하는 데코레이터
     """
 
-    if serializer is None:
-        serializer = serializers.DictField(default={})
-
     def decorator(view_func):
+        @wraps(view_func)
+        def wrapper(*args, **kwargs):
+            return view_func(*args, **kwargs)
+
+        response_name = f"{view_func.__name__}Response"
+
+        if serializer is not None and callable(serializer):
+            serializer_instance = serializer()
+        else:
+            serializer_instance = serializers.DictField(default={})  # 기본값 설정
+
         response_schema = inline_serializer(
-            name="CommonResponse",
+            name=response_name,
             fields={
-                "data": serializer,
+                "data": serializer_instance,
                 "status_code": serializers.IntegerField(default=status_code),
                 "msg": serializers.CharField(default="SUCCESS"),
                 "code": serializers.IntegerField(default=0),

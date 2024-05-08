@@ -7,13 +7,12 @@
 # System
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
-from drf_spectacular.utils import extend_schema, OpenApiResponse
+from drf_spectacular.utils import extend_schema
 
 # Project
 from core.constants import SYSTEM_CODE
 from core.exception import raise_exception
 from core.response import create_response
-from app.users.models import User
 from app.users.serializers import (
     SignUpSerializer,
     SignInSerializer,
@@ -30,11 +29,13 @@ class AuthViewSet(ViewSet):
     인증에 관련된 ViewSet 회원가입과 로그인을 처리함.
     """
 
+    authentication_classes = []  # 인증 과정을 생략
+
     @extend_schema(
         summary="회원가입",
         request=SignUpSerializer,
     )
-    @common_response_schema(status_code=201, description="회원가입 성공", serializer=SignUpSerializer())
+    @common_response_schema(status_code=201, description="회원가입 성공", serializer=SignUpSerializer)
     def sign_up(self, request):
         """
         회원가입을 처리합니다.
@@ -53,7 +54,7 @@ class AuthViewSet(ViewSet):
         summary="로그인",
         request=SignInSerializer,
     )
-    @common_response_schema(status_code=200, description="로그인 성공", serializer=SignInSerializer())
+    @common_response_schema(status_code=200, description="로그인 성공", serializer=SignInSerializer)
     def sign_in(self, request):
         """
         로그인을 처리합니다.
@@ -73,7 +74,7 @@ class AuthViewSet(ViewSet):
     @common_response_schema(
         status_code=200,
         description="토큰 재발급 성공",
-        serializer=TokenRefreshSerializer(),
+        serializer=TokenRefreshSerializer,
     )
     def token_refresh(self, request):
         """
