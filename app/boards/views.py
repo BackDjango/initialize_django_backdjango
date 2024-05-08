@@ -7,7 +7,7 @@
 # System
 from rest_framework import status
 from rest_framework.viewsets import ViewSet
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticatedOrReadOnly
 from drf_spectacular.utils import extend_schema
 
 # Project
@@ -31,7 +31,7 @@ class BoardViewSet(ViewSet):
     게시판에 관련된 ViewSet 게시글 생성, 조회, 수정, 삭제를 처리함.
     """
 
-    permission_classes = [IsAuthenticated]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
     @extend_schema(
         summary="게시글 생성",
